@@ -39,10 +39,37 @@ def main():
     gs = Engine.GameState()
     loadImages()
     running = True
+    clickSquare = ()
+    ckTrack = []
+    counter = 0
     while running:
         for e in pg.event.get():
             if e.type == pg.QUIT:
                 running = False
+            elif e.type == pg.MOUSEBUTTONDOWN:
+                loc = pg.mouse.get_pos()  # (x,y) Get the location of the mouse
+                col = loc[0] // SIZE
+                row = loc[1] // SIZE
+                if clickSquare == (row, col):
+                    clickSquare = ()
+                    ckTrack = []
+                else:
+                    clickSquare = (row, col)
+                    ckTrack.append(clickSquare)
+
+                if len(ckTrack) == 2:
+                    move = Engine.Moves(ckTrack[0], ckTrack[1], gs.board)
+                    note = move.Notation()
+                    if note:
+                        print(note, end=" ")
+                        counter += 1
+                    x = gs.MovePiece(move)
+                    clickSquare = ()
+                    ckTrack = []
+                    if counter == 2:
+                        print()
+                        counter = 0
+
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         pg.display.flip()
