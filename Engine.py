@@ -17,10 +17,11 @@ class GameState():
         self.moveLog = []
 
     def MovePiece(self, move):
-        self.board[move.startRow][move.startCol] = '--'
-        self.board[move.endRow][move.endCol] = move.pieceMoved
-        self.moveLog.append(move)
-        self.whiteMove = not self.whiteMove
+        if move.pieceMoved != '--':
+            self.board[move.startRow][move.startCol] = '--'
+            self.board[move.endRow][move.endCol] = move.pieceMoved
+            self.moveLog.append(move)
+            self.whiteMove = not self.whiteMove
 
 
 class Moves():
